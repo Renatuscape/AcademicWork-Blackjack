@@ -35,15 +35,14 @@
 
         public Card[] Draw(int drawNumber)
         {
-            Card[] cards = new Card[drawNumber];
+            Card[] drawnCards = new Card[drawNumber];
             for (int i = 0; i < drawNumber; i++)
             {
-                var randomIndex = cardRandomiser.Next(Cards.Count);
-                var drawnCard = Cards[randomIndex];
-                Cards.Remove(Cards[randomIndex]);
-                cards[i] = drawnCard;
+                var drawnCard = Cards[i];
+                Cards.Remove(Cards[i]);
+                drawnCards[i] = drawnCard;
             }
-            return cards;
+            return drawnCards;
         }
     }
 }
