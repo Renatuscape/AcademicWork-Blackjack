@@ -30,4 +30,13 @@ namespace AW_Blackjack
         Queen,
         King
     }
+
+    public enum Role
+    {
+        Dealer,
+        Player1,
+        Player2,
+        Player3,
+        Player4
+    }
 }
