@@ -4,8 +4,6 @@
     {
         public int MaxCards { get; } = 52;
         public List<Card> Cards { get; set; } = new();
-
-        Random cardRandomiser = new Random();
         public DeckOfCards()
         {
             CreateCards();
@@ -23,9 +21,11 @@
         }
         public void Shuffle()
         {
+            Random cardRandomiser = new Random();
             List<Card> shuffleDeck = Cards;
             Cards = new();
-            for (int i = 0; i < shuffleDeck.Count; i++)
+
+            for (int i = 0; i <= shuffleDeck.Count; i = 1)
             {
                 int randomIndex = cardRandomiser.Next(shuffleDeck.Count);
                 Cards.Add(shuffleDeck[randomIndex]);
