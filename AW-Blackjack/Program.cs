@@ -5,31 +5,11 @@
         static void Main()
         {
             DeckOfCards deck = new();
-        }
-    }
 
-    public enum Suit
-    {
-        Spades,
-        Diamonds,
-        Hearts,
-        Clubs
-    }
-    public enum Value
-    {
-        None,
-        Ace,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Ten,
-        Jack,
-        Queen,
-        King
+            foreach (Card c in deck.Draw(5))
+            {
+                Console.WriteLine($"{c.Value} of {c.Suit}");
+            }
+        }
     }
 }
