@@ -4,6 +4,7 @@
     {
         public int MaxCards { get; } = 52;
         public List<Card> Cards { get; set; } = new();
+        Random cardRandomiser = new Random();
         public DeckOfCards()
         {
             CreateCards();
@@ -21,7 +22,6 @@
         }
         public void Shuffle()
         {
-            Random cardRandomiser = new Random();
             List<Card> shuffleDeck = Cards;
             Cards = new();
 
@@ -31,6 +31,19 @@
                 Cards.Add(shuffleDeck[randomIndex]);
                 shuffleDeck.RemoveAt(randomIndex);
             }
+        }
+
+        public Card[] Draw(int drawNumber)
+        {
+            Card[] cards = new Card[drawNumber];
+            for (int i = 0; i < drawNumber; i++)
+            {
+                var randomIndex = cardRandomiser.Next(Cards.Count);
+                var drawnCard = Cards[randomIndex];
+                Cards.Remove(Cards[randomIndex]);
+                cards[i] = drawnCard;
+            }
+            return cards;
         }
     }
 }
