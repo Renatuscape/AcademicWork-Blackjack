@@ -15,23 +15,27 @@
             IsFaceUp = !IsFaceUp;
         }
 
-        public void Render()
+        public List<string> Render()
         {
-            Console.WriteLine(" --------- ");
-            Console.WriteLine("|  _____  |");
-            Console.WriteLine("| |     | |");
-            if (!IsFaceUp)
+            List<string> cardRenders = new List<string>()
             {
-                Console.WriteLine("| |     | |");
-            }
-            else
+            new("\t --------- "),
+            new("\t|  _____  |"),
+            new("\t| |     | |"),
+            new("\t| |     | |"),
+            new("\t| |     | |"),
+            new("\t| |     | |"),
+            new("\t|  -----  |"),
+            new("\t --------- ")
+            };
+
+            if (IsFaceUp)
             {
-                Console.WriteLine(this);
+                cardRenders[1] = cardRenders[1].Remove(4, Value.ToString().Count()).Insert(4, Value.ToString());
+                cardRenders[6] = cardRenders[6].Remove(3, Suit.ToString().Count()).Insert(3, Suit.ToString());
             }
-            Console.WriteLine("| |     | |");
-            Console.WriteLine("| |     | |");
-            Console.WriteLine("|  -----  |");
-            Console.WriteLine(" --------- ");
+
+            return cardRenders;
         }
 
         #region Overrides
