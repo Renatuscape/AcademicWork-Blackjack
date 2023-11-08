@@ -4,6 +4,7 @@
     {
         public Role PlayerRole { get; set; }
         public List<Card> Cards { get; set; } = new();
+        public bool IsEliminated { get; set; } = false;
 
         public Player(Role role)
         {
