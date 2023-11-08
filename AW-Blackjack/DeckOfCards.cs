@@ -2,13 +2,19 @@
 {
     public class DeckOfCards
     {
-        public int MaxCards { get; } = 52;
         public List<Card> Cards { get; set; } = new();
         Random cardRandomiser = new Random();
-        public DeckOfCards()
+        public DeckOfCards(int deckMultiplier = 1)
         {
             CreateCards();
-            Shuffle();
+
+            if (deckMultiplier > 0)
+            {
+                for (int i = 0; i <= deckMultiplier; i++)
+                {
+                    Shuffle();
+                }
+            }
         }
         void CreateCards()
         {
@@ -33,16 +39,22 @@
             }
         }
 
-        public Card[] Draw(int drawNumber)
+        public List<Card> Draw(int drawNumber)
         {
-            Card[] drawnCards = new Card[drawNumber];
+            List<Card> drawnCards = new();
+
             for (int i = 0; i < drawNumber; i++)
             {
-                var drawnCard = Cards[i];
-                Cards.Remove(Cards[i]);
-                drawnCards[i] = drawnCard;
+                drawnCards.Add(Draw());
             }
             return drawnCards;
+        }
+
+        public Card Draw()
+        {
+            var drawnCard = Cards[0];
+            Cards.Remove(Cards[0]);
+            return drawnCard;
         }
     }
 }
