@@ -14,6 +14,27 @@
         {
             IsFaceUp = !IsFaceUp;
         }
+
+        public void Render()
+        {
+            Console.WriteLine(" --------- ");
+            Console.WriteLine("|  _____  |");
+            Console.WriteLine("| |     | |");
+            if (!IsFaceUp)
+            {
+                Console.WriteLine("| |     | |");
+            }
+            else
+            {
+                Console.WriteLine(this);
+            }
+            Console.WriteLine("| |     | |");
+            Console.WriteLine("| |     | |");
+            Console.WriteLine("|  -----  |");
+            Console.WriteLine(" --------- ");
+        }
+
+        #region Overrides
         public override string ToString()
         {
             if (IsFaceUp)
@@ -44,5 +65,6 @@
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }
