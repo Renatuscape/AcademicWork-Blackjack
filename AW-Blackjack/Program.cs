@@ -4,32 +4,8 @@
     {
         static void Main()
         {
-            DeckOfCards deck = new();
+            GamePlay game = new();
+            game.NewGame(4);
         }
-    }
-
-    public enum Suit
-    {
-        Spades,
-        Diamonds,
-        Hearts,
-        Clubs
-    }
-    public enum Value
-    {
-        None,
-        Ace,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Ten,
-        Jack,
-        Queen,
-        King
     }
 }
