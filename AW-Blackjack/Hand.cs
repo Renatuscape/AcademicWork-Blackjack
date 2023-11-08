@@ -9,5 +9,27 @@
         {
             Role = role;
         }
+
+        public void RenderCards()
+        {
+            foreach (Card card in Cards)
+            {
+                Console.WriteLine(" --------- ");
+                Console.WriteLine("|  _____  |");
+                Console.WriteLine("| |     | |");
+                if (!card.IsFaceUp)
+                {
+                    Console.WriteLine("| |     | |");
+                }
+                else
+                {
+                    Console.WriteLine(card);
+                }
+                Console.WriteLine("| |     | |");
+                Console.WriteLine("| |     | |");
+                Console.WriteLine("|  -----  |");
+                Console.WriteLine(" --------- ");
+            }
+        }
     }
 }
