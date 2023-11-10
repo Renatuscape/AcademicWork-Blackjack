@@ -3,9 +3,9 @@
     public enum Suit
     {
         Spades,
+        Clubs,
         Diamonds,
-        Hearts,
-        Clubs
+        Hearts
     }
     public enum Value
     {
@@ -38,29 +38,6 @@
         public void Flip()
         {
             IsFaceUp = !IsFaceUp;
-        }
-
-        public List<string> Render()
-        {
-            List<string> cardRenders = new List<string>()
-            {
-            new("\t --------- "),
-            new("\t|  _____  |"),
-            new("\t| |     | |"),
-            new("\t| |     | |"),
-            new("\t| |     | |"),
-            new("\t| |     | |"),
-            new("\t|  -----  |"),
-            new("\t --------- ")
-            };
-
-            if (IsFaceUp)
-            {
-                cardRenders[1] = cardRenders[1].Remove(4, Value.ToString().Count()).Insert(4, Value.ToString());
-                cardRenders[6] = cardRenders[6].Remove(3, Suit.ToString().Count()).Insert(3, Suit.ToString());
-            }
-
-            return cardRenders;
         }
 
         #region Overrides

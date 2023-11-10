@@ -9,6 +9,7 @@ namespace AW_Blackjack
 
         public void NewGame(int playerNumber)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Players = new();
             Deck = new(6);
             bool isOver = false;
@@ -16,7 +17,7 @@ namespace AW_Blackjack
             for (int i = 0; i <= playerNumber; i++)
             {
                 Players.Add(new((Role)i));
-                Console.WriteLine(Players[i] + " added.");
+                Render.WriteColouredText(Players[i] + " added.", ConsoleColor.Black, (ConsoleColor)Players[i].PlayerRole + 1);
             }
 
             RoundOne();
@@ -42,7 +43,7 @@ namespace AW_Blackjack
 
             void RoundOne()
             {
-                Console.WriteLine("\n\tPress any key to deal!");
+                Render.Write(">> Press any key to continue");
                 Console.ReadKey();
                 Console.Clear();
                 foreach (Player player in Players)
@@ -64,7 +65,7 @@ namespace AW_Blackjack
                     {
                         player.Cards[1].Flip();
 
-                        RenderTools.RenderHand(player);
+                        Render.RenderHand(player);
                         cardsValue = CalculationTools.CalculateTotal(player.Cards);
                         if (cardsValue == 21)
                         {
@@ -72,15 +73,19 @@ namespace AW_Blackjack
                             isOver = true;
                             break;
                         }
+                        Render.Write(">> Press any key to continue", false);
+                        Console.ReadKey();
                         Console.Clear();
                     }
                     else
                     {
-                        RenderTools.RenderHand(player);
+                        Render.RenderHand(player);
+                        Render.Write(">> Press any key to continue", false);
+                        Console.ReadKey();
                         Console.Clear();
                     }
                 }
-                Console.WriteLine("\n\t>> Press any key to continue");
+                Render.Write("\n>> Press any key to continue");
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -92,17 +97,13 @@ namespace AW_Blackjack
                     Console.Clear();
                     if (player.PlayerRole != Role.Dealer && player.IsEliminated == false)
                     {
-                        Console.BackgroundColor = ConsoleColor.Green;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine($"\n\t[ {player}'s turn ]");
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        RenderTools.RenderHand(Players[0]);
-                        RenderTools.RenderHand(player);
-                        Console.WriteLine("\tTotal value is "+CalculationTools.CalculateTotal(player.Cards));
+                        Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole + 1, true, true);
+                        Render.RenderHand(Players[0]);
+                        Render.RenderHand(player);
+                        Render.Write("Total value is " + CalculationTools.CalculateTotal(player.Cards));
 
-                        Console.WriteLine($"\tWhat would you like to do?" +
-                            $"\n\t[H]it");
+                        Render.Write($"What would you like to do?");
+                            Render.WriteColouredText("[H]it", ConsoleColor.Magenta);
                         var playerChoice = Console.ReadKey().KeyChar.ToString();
                         Console.Clear();
 
@@ -112,16 +113,11 @@ namespace AW_Blackjack
                             {
                                 player.Cards.Add(Deck.Draw());
                                 player.Cards[player.Cards.Count - 1].Flip();
-
-                                Console.BackgroundColor = ConsoleColor.Green;
-                                Console.ForegroundColor = ConsoleColor.Black;
-                                Console.WriteLine($"\n\t[ {player}'s turn ]");
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.ForegroundColor = ConsoleColor.White;
-                                RenderTools.RenderHand(Players[0]);
-                                RenderTools.RenderHand(player);
+                                Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole+1, true, true);
+                                Render.RenderHand(Players[0]);
+                                Render.RenderHand(player);
                                 var cardsValue = CalculationTools.CalculateTotal(player.Cards);
-                                Console.WriteLine("\tTotal value is "+ cardsValue);
+                                Render.Write("Total value is "+ cardsValue);
                                 if (cardsValue == 21)
                                 {
                                     Console.WriteLine($"\t{player} has won the game!");
@@ -130,10 +126,10 @@ namespace AW_Blackjack
                                 }
                                 else if (cardsValue > 21)
                                 {
-                                    Console.WriteLine($"\t{player} has been eliminated!");
+                                    Render.Write($"{player} has been eliminated!");
                                     player.IsEliminated = true;
                                 }
-                                Console.WriteLine("\n\t>> Press any key to continue");
+                                Render.Write(">> Press any key to continue", false);
                                 Console.ReadKey();
                                 Console.Clear();
                             }
