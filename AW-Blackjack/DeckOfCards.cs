@@ -16,16 +16,6 @@
                 }
             }
         }
-        void CreateCards()
-        {
-            for (int cardSuit = 0; cardSuit <= 3; cardSuit++) //run for each suit
-            {
-                for (int cardValue = 1; cardValue <= 13; cardValue++)
-                {
-                    Cards.Add(new((Suit)cardSuit, (Value)cardValue));
-                }
-            }
-        }
         public void Shuffle()
         {
             List<Card> shuffleDeck = Cards;
@@ -55,6 +45,17 @@
             var drawnCard = Cards[0];
             Cards.Remove(Cards[0]);
             return drawnCard;
+        }
+
+        void CreateCards()
+        {
+            for (int cardSuit = 0; cardSuit <= 3; cardSuit++) //run for each suit
+            {
+                for (int cardValue = 1; cardValue <= 13; cardValue++)
+                {
+                    Cards.Add(new((Suit)cardSuit, (Value)cardValue));
+                }
+            }
         }
     }
 }
