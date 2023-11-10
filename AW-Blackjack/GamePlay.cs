@@ -4,8 +4,8 @@ namespace AW_Blackjack
 {
     public class GamePlay
     {
-        public List<Player>? Players { get; set; }
-        public DeckOfCards? Deck { get; set; }
+        public List<Player>? Players { get; private set; }
+        public DeckOfCards? Deck { get; private set; }
 
         public void NewGame(int playerNumber)
         {
@@ -33,7 +33,7 @@ namespace AW_Blackjack
                 }
                 if (eliminatedPlayers >= playerNumber){
                     isOver = true;
-                    Console.WriteLine("\n\tALL PLAYERS HAVE BEEN ELIMINATED. HOUSE WINS.");
+                    Render.WriteColouredText("\tALL PLAYERS HAVE BEEN ELIMINATED. HOUSE WINS.", ConsoleColor.Yellow, ConsoleColor.DarkRed);
                     var x = Console.ReadKey().KeyChar;
                     break;
                 }
@@ -69,7 +69,8 @@ namespace AW_Blackjack
                         cardsValue = CalculationTools.CalculateTotal(player.Cards);
                         if (cardsValue == 21)
                         {
-                            Console.WriteLine($"\n\t{player} wins with Blackjack!\n");
+                            var winText = $"\n\t !=!=! {player} wins with Blackjack! !=!=! \n";
+                            Render.WriteColouredText(winText.ToUpper(), ConsoleColor.DarkMagenta, ConsoleColor.Green);
                             isOver = true;
                             break;
                         }
@@ -120,7 +121,8 @@ namespace AW_Blackjack
                                 Render.Write("Total value is "+ cardsValue);
                                 if (cardsValue == 21)
                                 {
-                                    Console.WriteLine($"\t{player} has won the game!");
+                                    var winText = $"\n\t - {player} has won the game! - \n";
+                                    Render.WriteColouredText(winText.ToUpper(), ConsoleColor.Black, ConsoleColor.DarkGreen);
                                     isOver = true;
                                     break;
                                 }
