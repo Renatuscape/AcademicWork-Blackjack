@@ -1,5 +1,14 @@
 ﻿namespace AW_Blackjack
 {
+    public enum Role
+    {
+        Dealer,
+        Player1,
+        Player2,
+        Player3,
+        Player4
+    }
+
     public class Player
     {
         public Role PlayerRole { get; set; }

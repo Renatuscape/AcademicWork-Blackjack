@@ -1,5 +1,30 @@
 ﻿namespace AW_Blackjack
 {
+    public enum Suit
+    {
+        Spades,
+        Diamonds,
+        Hearts,
+        Clubs
+    }
+    public enum Value
+    {
+        None,
+        Ace,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Jack,
+        Queen,
+        King
+    }
+
     public class Card
     {
         public Suit Suit { get; }
