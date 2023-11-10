@@ -1,4 +1,6 @@
-﻿namespace AW_Blackjack
+﻿using System.Numerics;
+
+namespace AW_Blackjack
 {
     public class Program
     {

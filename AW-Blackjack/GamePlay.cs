@@ -4,7 +4,6 @@ namespace AW_Blackjack
 {
     public class GamePlay
     {
-        public int Round { get; set; }
         public List<Player>? Players { get; set; }
         public DeckOfCards? Deck { get; set; }
 
@@ -65,18 +64,20 @@ namespace AW_Blackjack
                     {
                         player.Cards[1].Flip();
 
-                        cardsValue = CalculateTotal(player.Cards);
-                        RenderHand(player, true, 1800);
+                        RenderTools.RenderHand(player);
+                        cardsValue = CalculationTools.CalculateTotal(player.Cards);
                         if (cardsValue == 21)
                         {
                             Console.WriteLine($"\n\t{player} wins with Blackjack!\n");
                             isOver = true;
                             break;
                         }
+                        Console.Clear();
                     }
                     else
                     {
-                        RenderHand(player);
+                        RenderTools.RenderHand(player);
+                        Console.Clear();
                     }
                 }
                 Console.WriteLine("\n\t>> Press any key to continue");
@@ -96,12 +97,14 @@ namespace AW_Blackjack
                         Console.WriteLine($"\n\t[ {player}'s turn ]");
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
-                        RenderHand(Players[0]);
-                        RenderHand(player, true);
+                        RenderTools.RenderHand(Players[0]);
+                        RenderTools.RenderHand(player);
+                        Console.WriteLine("\tTotal value is "+CalculationTools.CalculateTotal(player.Cards));
 
                         Console.WriteLine($"\tWhat would you like to do?" +
                             $"\n\t[H]it");
                         var playerChoice = Console.ReadKey().KeyChar.ToString();
+                        Console.Clear();
 
                         if (!string.IsNullOrWhiteSpace(playerChoice))
                         {
@@ -109,15 +112,23 @@ namespace AW_Blackjack
                             {
                                 player.Cards.Add(Deck.Draw());
                                 player.Cards[player.Cards.Count - 1].Flip();
-                                RenderHand(Players[0]);
-                                RenderHand(player, true);
-                                if (CalculateTotal(player.Cards) == 21)
+
+                                Console.BackgroundColor = ConsoleColor.Green;
+                                Console.ForegroundColor = ConsoleColor.Black;
+                                Console.WriteLine($"\n\t[ {player}'s turn ]");
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.ForegroundColor = ConsoleColor.White;
+                                RenderTools.RenderHand(Players[0]);
+                                RenderTools.RenderHand(player);
+                                var cardsValue = CalculationTools.CalculateTotal(player.Cards);
+                                Console.WriteLine("\tTotal value is "+ cardsValue);
+                                if (cardsValue == 21)
                                 {
                                     Console.WriteLine($"\t{player} has won the game!");
                                     isOver = true;
                                     break;
                                 }
-                                else if (CalculateTotal(player.Cards) > 21)
+                                else if (cardsValue > 21)
                                 {
                                     Console.WriteLine($"\t{player} has been eliminated!");
                                     player.IsEliminated = true;
@@ -130,63 +141,6 @@ namespace AW_Blackjack
                     }
                 }
             }
-        }
-
-        public static void RenderHand(Player player, bool calculateSum = false, int sleepTimer = 0)
-        {
-            Console.WriteLine($"\n\t ***** {player}'s Hand *****\n");
-
-            List<string> cardsByLine = new();
-
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            for (int i = 0; i < 8; i++)
-            {
-                var faceLine = string.Empty;
-                foreach (Card card in player.Cards)
-                {
-                    var faceStringList = card.Render();
-                    faceLine += faceStringList[i];
-                }
-                cardsByLine.Add(faceLine);
-            }
-
-            foreach (string faceLines in cardsByLine)
-            {
-                Console.WriteLine(faceLines);
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-
-            if (calculateSum)
-            {
-                Console.WriteLine($"\n\tTotal value of hand: {CalculateTotal(player.Cards)}");
-            }
-            Thread.Sleep(sleepTimer);
-        }
-        public static int CalculateTotal(List<Card> hand)
-        {
-            int sum = 0;
-
-            if (hand.Count == 2)
-            {
-                if ((hand[0].Value == Value.Ace && hand[1].Value > (Value)9) || (hand[1].Value == Value.Ace && hand[0].Value > (Value)9))
-                {
-                    return 21;
-                }
-            }
-
-            for (int i = 0; i < hand.Count; i++)
-            {
-                if (hand[i].Value > (Value)10)
-                {
-                    sum += 10;
-                }
-                else
-                {
-                    sum += (int)hand[i].Value;
-                }
-            }
-
-            return sum;
         }
     }
 }
