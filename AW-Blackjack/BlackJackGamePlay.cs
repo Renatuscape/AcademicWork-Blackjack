@@ -22,24 +22,7 @@ namespace AW_Blackjack
 
             RoundOne();
             RoundTwo();
-
-            while (!isOver)
-            {
-                var eliminatedPlayers = 0;
-                foreach (Player player in Players)
-                {
-                    if (player.IsEliminated)
-                        eliminatedPlayers++;
-                }
-                if (eliminatedPlayers >= playerNumber){
-                    isOver = true;
-                    Render.WriteColouredText("\tALL PLAYERS HAVE BEEN ELIMINATED. HOUSE WINS.", ConsoleColor.Yellow, ConsoleColor.DarkRed);
-                    var x = Console.ReadKey().KeyChar;
-                    break;
-                }
-                RoundNext();
-            }
-
+            RoundThree();
 
             void RoundOne()
             {
@@ -72,6 +55,7 @@ namespace AW_Blackjack
                             var winText = $"\n\t !=!=! {player} wins with Blackjack! !=!=! \n";
                             Render.WriteColouredText(winText.ToUpper(), ConsoleColor.DarkMagenta, ConsoleColor.Green);
                             isOver = true;
+                            Render.ContinueAfterInput();
                             break;
                         }
                         Render.Write(">> Press any key to continue", false);
@@ -81,58 +65,110 @@ namespace AW_Blackjack
                     else
                     {
                         Render.RenderHand(player);
-                        Render.Write(">> Press any key to continue", false);
-                        Console.ReadKey();
-                        Console.Clear();
+                        Render.ContinueAfterInput();
                     }
                 }
             }
 
-            void RoundNext()
+            void RoundThree()
             {
+                int eliminatedPlayers = 0;
+                int standingPlayers = 0;
+
+                bool AllPlayersEliminated()
+                {
+                    if (eliminatedPlayers >= Players?.Count-1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                bool AllPlayersFinished()
+                {
+                    if (eliminatedPlayers + standingPlayers >= Players?.Count-1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+
                 foreach (Player player in Players)
                 {
                     Console.Clear();
-                    if (player.PlayerRole != Role.Dealer && player.IsEliminated == false)
+                    if (player.PlayerRole != Role.Dealer && !player.IsEliminated && !isOver)
                     {
-                        Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole + 1, true, true);
-                        Render.RenderHand(Players[0]);
-                        Render.RenderHand(player);
-                        Render.Write("Total value is " + CalculationTools.CalculateTotal(player.Cards));
-
-                        Render.Write($"What would you like to do?");
-                            Render.WriteColouredText("[H]it", ConsoleColor.Magenta);
-                        var playerChoice = Console.ReadKey().KeyChar.ToString();
-                        Console.Clear();
-
-                        if (!string.IsNullOrWhiteSpace(playerChoice))
+                        bool stand = false;
+                        while (!stand && !player.IsEliminated)
                         {
-                            if (playerChoice.ToLower() == "h")
+                            Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole + 1, true, true);
+                            Render.RenderHand(Players[0]);
+                            Render.RenderHand(player);
+                            Render.Write("Total value is " + CalculationTools.CalculateTotal(player.Cards));
+
+                            Render.Write($"What would you like to do?");
+                            Render.WriteColouredText("[H]it", ConsoleColor.Magenta);
+                            Render.WriteColouredText("[S]tand", ConsoleColor.Magenta);
+                            var playerChoice = Console.ReadKey().KeyChar.ToString();
+                            Console.Clear();
+
+                            if (!string.IsNullOrWhiteSpace(playerChoice))
                             {
-                                player.Cards.Add(Deck.Draw());
-                                player.Cards[player.Cards.Count - 1].Flip();
-                                Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole+1, true, true);
-                                Render.RenderHand(Players[0]);
-                                Render.RenderHand(player);
-                                var cardsValue = CalculationTools.CalculateTotal(player.Cards);
-                                Render.Write("Total value is "+ cardsValue);
-                                if (cardsValue == 21)
+                                if (playerChoice.ToLower() == "h")
                                 {
-                                    var winText = $"\n\t - {player} has won the game! - \n";
-                                    Render.WriteColouredText(winText.ToUpper(), ConsoleColor.Black, ConsoleColor.DarkGreen);
-                                    isOver = true;
-                                    break;
+                                    player.Cards.Add(Deck.Draw());
+                                    player.Cards[player.Cards.Count - 1].Flip();
+                                    Render.WriteColouredText($"[ {player}'s turn ]", ConsoleColor.Black, (ConsoleColor)player.PlayerRole + 1, true, true);
+                                    Render.RenderHand(Players[0]);
+                                    Render.RenderHand(player);
+                                    var cardsValue = CalculationTools.CalculateTotal(player.Cards);
+                                    Render.Write("Total value is " + cardsValue);
+                                    if (cardsValue == 21)
+                                    {
+                                        var winText = $"\n\t - {player} has won the game! - \n";
+                                        Render.WriteColouredText(winText.ToUpper(), ConsoleColor.Black, ConsoleColor.DarkGreen);
+                                        isOver = true;
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                        break;
+                                    }
+                                    else if (cardsValue > 21)
+                                    {
+                                        Render.Write($"{player} has been eliminated!");
+                                        eliminatedPlayers++;
+                                        player.IsEliminated = true;
+                                        Render.ContinueAfterInput();
+                                    }
+                                    //Render.Write(">> Press any key to continue", false);
+                                    //Console.ReadKey();
+                                    Console.Clear();
                                 }
-                                else if (cardsValue > 21)
+                                if (playerChoice.ToLower() == "s")
                                 {
-                                    Render.Write($"{player} has been eliminated!");
-                                    player.IsEliminated = true;
+                                    stand = true;
+                                    standingPlayers++;
+                                    Render.Write($"{player} has chosen to stand with a total value of " + CalculationTools.CalculateTotal(player.Cards));
+                                    Render.ContinueAfterInput();
                                 }
-                                Render.Write(">> Press any key to continue", false);
-                                Console.ReadKey();
-                                Console.Clear();
                             }
                         }
+                    }
+                }
+
+                if (!isOver)
+                {
+                    if (AllPlayersEliminated())
+                    {
+                        Render.WriteColouredText("\tALL PLAYERS HAVE BEEN ELIMINATED. HOUSE WINS.", ConsoleColor.Yellow, ConsoleColor.DarkRed);
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                    else if (AllPlayersFinished())
+                    {
+                        Render.WriteColouredText($"All players have been served. Players: {standingPlayers}. Bust: {eliminatedPlayers}", ConsoleColor.Cyan);
+                        Render.Write("");
+                        Render.WriteColouredText($"\tPlayers: {standingPlayers}", ConsoleColor.Cyan);
+                        Render.WriteColouredText($"\tBust: {eliminatedPlayers}", ConsoleColor.Cyan);
+                        Render.ContinueAfterInput();
                     }
                 }
             }
