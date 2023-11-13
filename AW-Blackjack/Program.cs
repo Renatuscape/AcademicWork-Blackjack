@@ -6,8 +6,7 @@ namespace AW_Blackjack
     {
         static void Main()
         {
-            GamePlay game = new();
-            game.NewGame(4);
+            Menu.Initialise();
         }
     }
 }
