@@ -30,6 +30,7 @@
         public Suit Suit { get; }
         public Value Value { get; }
         public bool IsFaceUp { get; private set; }
+        public bool blackJackRules = false;
         public Card(Suit suit, Value value)
         {
             Suit = suit;
@@ -56,8 +57,17 @@
 
         public static int operator +(Card a, Card b)
         {
-            int valueA = BlackJacker(a);
-            int valueB = BlackJacker(b);
+            int valueA = (int)a.Value;
+            int valueB = (int)b.Value;
+
+            if (a.blackJackRules)
+            {
+                valueA = BlackJacker(a);
+            }
+            if (b.blackJackRules)
+            {
+                valueB = BlackJacker(b);
+            }
 
             int BlackJacker(Card card)
             {
@@ -73,16 +83,15 @@
 
         public static int operator +(Card a, int b)
         {
-            int valueA = BlackJacker(a);
+            int valueA = (int)a.Value;
             int valueB = b;
 
-            int BlackJacker(Card card)
+            if (a.blackJackRules)
             {
-                if ((int)card.Value > 10)
+                if (valueA > 10)
                 {
-                    return 10;
+                    valueA = 10;
                 }
-                return (int)card.Value;
             }
 
             return valueA + valueB;

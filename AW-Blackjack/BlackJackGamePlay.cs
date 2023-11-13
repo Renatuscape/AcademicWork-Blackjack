@@ -2,7 +2,7 @@
 
 namespace AW_Blackjack
 {
-    public class GamePlay
+    public class BlackJackGamePlay
     {
         public List<Player>? Players { get; private set; }
         public DeckOfCards? Deck { get; private set; }
@@ -11,7 +11,7 @@ namespace AW_Blackjack
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Players = new();
-            Deck = new(6);
+            Deck = new(6, true);
             bool isOver = false;
 
             for (int i = 0; i <= playerNumber; i++)
@@ -86,9 +86,6 @@ namespace AW_Blackjack
                         Console.Clear();
                     }
                 }
-                Render.Write("\n>> Press any key to continue");
-                Console.ReadKey();
-                Console.Clear();
             }
 
             void RoundNext()
@@ -139,6 +136,7 @@ namespace AW_Blackjack
                     }
                 }
             }
+            Console.Clear();
         }
     }
 }

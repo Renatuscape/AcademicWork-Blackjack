@@ -4,8 +4,13 @@
     {
         public List<Card> Cards { get; set; } = new();
         Random cardRandomiser = new Random();
-        public DeckOfCards(int deckMultiplier = 1)
+        public bool blackJackRules = false;
+        public DeckOfCards(int deckMultiplier = 1, bool useBlackJackRules = false)
         {
+            if (useBlackJackRules)
+            {
+                blackJackRules = true;
+            }
             CreateCards();
 
             if (deckMultiplier > 0)
@@ -53,7 +58,12 @@
             {
                 for (int cardValue = 1; cardValue <= 13; cardValue++)
                 {
-                    Cards.Add(new((Suit)cardSuit, (Value)cardValue));
+                    Card newCard = new((Suit)cardSuit, (Value)cardValue);
+                    if (blackJackRules)
+                    {
+                        newCard.blackJackRules = true;
+                    }
+                    Cards.Add(newCard);
                 }
             }
         }
