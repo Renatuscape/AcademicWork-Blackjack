@@ -139,5 +139,12 @@
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
+
+        public static void ContinueAfterInput()
+        {
+            Render.Write(">> Press any key to continue", false);
+            Console.ReadKey();
+            Console.Clear();
+        }
     }
 }
