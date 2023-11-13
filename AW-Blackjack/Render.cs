@@ -142,7 +142,8 @@
 
         public static void ContinueAfterInput()
         {
-            Render.Write(">> Press any key to continue", false);
+            Write("");
+            WriteColouredText(">> Press any key to continue", ConsoleColor.Magenta, ConsoleColor.Black, false);
             Console.ReadKey();
             Console.Clear();
         }
