@@ -16,14 +16,7 @@
 
             for (int i = 0; i < hand.Count; i++)
             {
-                if (hand[i].Value > (Value)10)
-                {
-                    sum += 10;
-                }
-                else
-                {
-                    sum += (int)hand[i].Value;
-                }
+                sum = hand[i] + sum;
             }
 
             return sum;

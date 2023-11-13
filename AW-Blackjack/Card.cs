@@ -40,6 +40,54 @@
             IsFaceUp = !IsFaceUp;
         }
 
+        public static bool operator ==(Card a, Card b)
+        {
+            if (a.Value == b.Value)
+                return true;
+            else return false;
+        }
+
+        public static bool operator !=(Card a, Card b)
+        {
+            if (a.Value == b.Value)
+                return true;
+            else return false;
+        }
+
+        public static int operator +(Card a, Card b)
+        {
+            int valueA = BlackJacker(a);
+            int valueB = BlackJacker(b);
+
+            int BlackJacker(Card card)
+            {
+                if ((int)card.Value > 10)
+                {
+                    return 10;
+                }
+                return (int)card.Value;
+            }
+
+            return valueA + valueB;
+        }
+
+        public static int operator +(Card a, int b)
+        {
+            int valueA = BlackJacker(a);
+            int valueB = b;
+
+            int BlackJacker(Card card)
+            {
+                if ((int)card.Value > 10)
+                {
+                    return 10;
+                }
+                return (int)card.Value;
+            }
+
+            return valueA + valueB;
+        }
+
         #region Overrides
         public override string ToString()
         {
