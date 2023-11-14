@@ -29,7 +29,7 @@
     {
         public Suit Suit { get; }
         public Value Value { get; }
-        public bool IsFaceUp { get; private set; }
+        public bool IsFaceUp { get; set; }
         public bool blackJackRules = false;
         public Card(Suit suit, Value value)
         {

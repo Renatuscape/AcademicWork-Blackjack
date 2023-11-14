@@ -30,7 +30,7 @@
         }
         public static void BlackJackInterface()
         {
-            Render.Write("This game is designed for 1 - 5 players.");
+            Render.Write("This game is designed for 1 - 9 players.");
             Render.Write("Please enter number of players:");
             Render.Write("", false);
             var choice = Console.ReadKey().KeyChar.ToString();
@@ -38,9 +38,9 @@
 
             if (int.TryParse(choice, out var playerCount))
             {
-                if (playerCount < 1 || playerCount > 5)
+                if (playerCount < 1)
                 {
-                    Render.Write("Players must be between 1 and 5.", false);
+                    Render.Write("The game requires at least one player.", false);
                     Render.ContinueAfterInput();
                 }
                 else

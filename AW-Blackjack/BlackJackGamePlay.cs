@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using AW_Blackjack;
+using System.Numerics;
 
 namespace AW_Blackjack
 {
@@ -12,6 +13,8 @@ namespace AW_Blackjack
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Players = new();
             Deck = new(6, true);
+            int eliminatedPlayers = 0;
+            int standingPlayers = 0;
             bool isGameOver = false;
 
             for (int i = 0; i <= playerNumber; i++)
@@ -24,19 +27,31 @@ namespace AW_Blackjack
             BlackJackRoundTwo.Initialise(Deck, Players, ref isGameOver);
             BlackJackRoundThree.Initialise(Deck, Players, ref isGameOver);
 
-            if (!isGameOver)
+            GetPlayerStatus(Players, out eliminatedPlayers, out standingPlayers);
+
+            if (eliminatedPlayers == Players.Count - 1)
             {
-                AllPlayersFinished(Players, out var eliminatedPlayers, out var standingPlayers);
-                Render.WriteColouredText($"{eliminatedPlayers + standingPlayers} player(s) served.", ConsoleColor.Cyan);
-                Render.Write("");
-                Render.WriteColouredText($"\tPlayers: {standingPlayers}", ConsoleColor.Cyan);
-                Render.WriteColouredText($"\tBust: {eliminatedPlayers}", ConsoleColor.Cyan);
+                Render.WriteColouredText(" ♠  ♦  ♣  ♥ ALL PLAYERS BUST - HOUSE WINS! ♠  ♦  ♣  ♥ ", ConsoleColor.DarkRed, ConsoleColor.DarkYellow);
                 Render.ContinueAfterInput();
             }
+
+            else
+            {
+                if (!isGameOver)
+                {
+                    Render.WriteColouredText($"{eliminatedPlayers + standingPlayers} player(s) served.", ConsoleColor.Gray);
+                    Render.Write("");
+                    Render.WriteColouredText($"\tPlayers: {standingPlayers}", ConsoleColor.Gray);
+                    Render.WriteColouredText($"\tBust: {eliminatedPlayers}", ConsoleColor.Red);
+                    Render.ContinueAfterInput();
+                    BlackJackFinalRound.Initialise(Deck, Players);
+                }
+            }
+
             Console.Clear();
         }
 
-        static bool AllPlayersFinished(List<Player> Players, out int countEliminated, out int countStanding)
+        static void GetPlayerStatus(List<Player> Players, out int countEliminated, out int countStanding)
         {
             int eliminatedPlayers = 0;
             int standingPlayers = 0;
@@ -52,16 +67,8 @@ namespace AW_Blackjack
                     standingPlayers++;
                 }
             }
-
-            if (eliminatedPlayers + standingPlayers >= Players?.Count - 1)
-            {
-                countEliminated = eliminatedPlayers;
-                countStanding = standingPlayers;
-                return true;
-            }
             countEliminated = eliminatedPlayers;
             countStanding = standingPlayers;
-            return false;
         }
     }
 }

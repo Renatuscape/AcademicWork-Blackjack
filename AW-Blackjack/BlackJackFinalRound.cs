@@ -23,9 +23,11 @@ namespace AW_Blackjack
             Render.RenderHand(dealer);
             Render.Write($"{dealer}'s hidden card was {dealer.Cards[dealer.Cards.Count - 1]}");
             var dealerTotal = CalculationTools.CalculateTotal(dealer.Cards);
+            Render.ContinueAfterInput();
 
             while (dealerTotal < 17)
             {
+                Render.RenderHand(dealer);
                 Render.Write($"{dealer}'s hand is less than 17. {dealer} must draw.");
                 Render.ContinueAfterInput();
                 var newCard = Deck.Draw();
@@ -40,13 +42,14 @@ namespace AW_Blackjack
 
             if (dealerTotal > 17 && dealerTotal < 21)
             {
+                Render.RenderHand(dealer);
                 Render.Write($"{dealer}'s hand is 17 or more. {dealer} must stand with a total value of {dealerTotal}.");
                 Render.ContinueAfterInput();
                 FinalTally(Players);
             }
             else if (dealerTotal > 21)
             {
-                Render.WriteColouredText($" *** {dealerTotal}! {dealer.ToString().ToUpper()} IS BUST! *** ", ConsoleColor.White, ConsoleColor.DarkGreen);
+                Render.WriteColouredText($" ♠  ♦  ♣  ♥ {dealerTotal}! {dealer.ToString().ToUpper()} IS BUST! ♠  ♦  ♣  ♥ ", ConsoleColor.White, ConsoleColor.DarkGreen);
                 Render.Write("");
                 Render.Write("\n\tWinner(s):");
                 foreach (Player player in Players)
@@ -67,7 +70,7 @@ namespace AW_Blackjack
 
         public static void FinalTally(List<Player> Players)
         {
-            Render.WriteColouredText(" *** Final Tally *** \n", ConsoleColor.Magenta);
+            Render.WriteColouredText(" ♠  ♦  ♣  ♥ Final Tally ♠  ♦  ♣  ♥ \n", ConsoleColor.Red);
             List<Player> scoreList = new();
             foreach (Player player in Players)
             {
@@ -82,7 +85,7 @@ namespace AW_Blackjack
             foreach (Player player in sortedList)
             {
                 var totalValue = CalculationTools.CalculateTotal(player.Cards);
-                Render.WriteColouredText($"{player}: {totalValue} with {player.Cards.Count} cards", ConsoleColor.Cyan);
+                Render.WriteColouredText($"{player}: {totalValue} with {player.Cards.Count} cards", ConsoleColor.Gray);
             }
             Render.ContinueAfterInput();
         }

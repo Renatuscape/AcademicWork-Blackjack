@@ -5,10 +5,19 @@
 
         public static void RenderHand(Player player)
         {
-            WriteColouredText($"***** {player}'s Hand *****\n", ConsoleColor.Black, (ConsoleColor)player.PlayerRole + 1);
+            var playerColour = (ConsoleColor)player.PlayerRole + 1;
+            WriteColouredText($"***** {player}'s Hand *****\n", ConsoleColor.Black, playerColour);
 
             List<string> cardsByLine = new();
+            if (playerColour == ConsoleColor.Gray || playerColour == ConsoleColor.White)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+            }
+            else
+            {
             Console.BackgroundColor = ConsoleColor.Gray;
+            }
+
             Console.ForegroundColor = (ConsoleColor)player.PlayerRole+1;
             for (int i = 0; i < 8; i++)
             {
@@ -143,7 +152,7 @@
         public static void ContinueAfterInput()
         {
             Write("");
-            WriteColouredText(">> Press any key to continue", ConsoleColor.Magenta, ConsoleColor.Black, false);
+            WriteColouredText(">> Press any key to continue", ConsoleColor.DarkGray, ConsoleColor.Black, false);
             Console.ReadKey();
             Console.Clear();
         }

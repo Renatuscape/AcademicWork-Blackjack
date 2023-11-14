@@ -18,7 +18,7 @@
                     cardsValue = CalculationTools.CalculateTotal(player.Cards);
                     if (cardsValue == 21)
                     {
-                        var winText = $"\n\t !=!=! {player} wins with Blackjack! !=!=! \n";
+                        var winText = $"\n\t ♠  ♦  ♣  ♥ {player.ToString().ToUpper()} WINS WITH BLACKJACK! ♠  ♦  ♣  ♥ \n";
                         Render.WriteColouredText(winText.ToUpper(), ConsoleColor.DarkMagenta, ConsoleColor.Green);
                         isGameOver = true;
                         Render.ContinueAfterInput();

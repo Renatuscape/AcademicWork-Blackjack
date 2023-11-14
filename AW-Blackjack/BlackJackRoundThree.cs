@@ -19,8 +19,8 @@
                         Render.Write("Total value is " + CalculationTools.CalculateTotal(player.Cards));
 
                         Render.Write($"What would you like to do?");
-                        Render.WriteColouredText("[H]it", ConsoleColor.Magenta);
-                        Render.WriteColouredText("[S]tand", ConsoleColor.Magenta);
+                        Render.WriteColouredText("[H]it", ConsoleColor.Gray);
+                        Render.WriteColouredText("[S]tand", ConsoleColor.Red);
                         var playerChoice = Console.ReadKey().KeyChar.ToString();
                         Console.Clear();
 
@@ -37,7 +37,7 @@
                                 Render.Write("Total value is " + cardsValue);
                                 if (cardsValue == 21)
                                 {
-                                    var winText = $"\n\t - {player} has won the game! - \n";
+                                    var winText = $"\n\t ♠  ♦  ♣  ♥ {player} has won the game! ♠  ♦  ♣  ♥ \n";
                                     Render.WriteColouredText(winText.ToUpper(), ConsoleColor.Black, ConsoleColor.DarkGreen);
                                     isGameOver = true;
                                     Console.ReadKey();
